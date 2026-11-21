@@ -1,0 +1,251 @@
+{
+  "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "benchmark_repeats": 5,
+  "warmup_runs": 1,
+  "timing_scope": "pair_median_seconds: search, endpoint escapes and search-time collision checks. pair_verified_median_seconds: search PLUS independent validation, five full trials. Both exclude board setup, singles, rendering and file writes.",
+  "scale_definition": "Board width, height and component centres scale; footprints, pitch, grid and trace dimensions stay fixed.",
+  "scenarios": [
+    {
+      "p_length_mm": 44.61161243192578,
+      "n_length_mm": 44.61161243192578,
+      "skew_mm": 0.0,
+      "coupled_centre_spacing_mm": 1.0,
+      "coupled_edge_gap_mm": 0.75,
+      "sampled_min_centre_spacing_mm": 0.999464587476357,
+      "pair_vias": 0,
+      "checks": "PASS: endpoints, continuity, same layer, pad/copper clearance, self-crossings, spacing, skew",
+      "expanded_states": 5485,
+      "discovered_states": 6819,
+      "coupled_actions": 66,
+      "algorithm": "joint weighted A*, top layer, exact offset arcs",
+      "board_scale": 1,
+      "board_width_mm": 150.0,
+      "board_height_mm": 100.0,
+      "grid_mm": 0.5,
+      "grid_columns": 300,
+      "grid_rows": 200,
+      "grid_cells_per_layer": 60000,
+      "pair_route_seconds": [
+        1.654825999867171,
+        1.4372867001220584,
+        1.3212463003583252,
+        1.3194080996327102,
+        1.2017465000972152
+      ],
+      "pair_median_seconds": 1.3212463003583252,
+      "pair_min_seconds": 1.2017465000972152,
+      "pair_max_seconds": 1.654825999867171,
+      "setup_seconds": 0.00033449986949563026,
+      "pair_validation_seconds": 0.03506319969892502,
+      "pair_validation_samples_seconds": [
+        0.02913270005956292,
+        0.03607189981266856,
+        0.03506319969892502,
+        0.03111480036750436,
+        0.038164000026881695
+      ],
+      "pair_verified_samples_seconds": [
+        1.683958699926734,
+        1.473358599934727,
+        1.3563095000572503,
+        1.3505229000002146,
+        1.2399105001240969
+      ],
+      "pair_verified_median_seconds": 1.3563095000572503,
+      "single_routing_and_validation_seconds": 29.756837700027972,
+      "single_nets_attempted": 25,
+      "single_nets_routed": 22,
+      "single_nets_failed": 3,
+      "failures": [
+        {
+          "pads": [
+            91,
+            21
+          ],
+          "reason": "no path",
+          "expanded_states": 1
+        },
+        {
+          "pads": [
+            81,
+            55
+          ],
+          "reason": "state limit",
+          "expanded_states": 100001
+        },
+        {
+          "pads": [
+            56,
+            18
+          ],
+          "reason": "state limit",
+          "expanded_states": 100001
+        }
+      ],
+      "single_expanded_states": 751806,
+      "pairs": {
+        "P": [
+          22,
+          76
+        ],
+        "N": [
+          23,
+          77
+        ]
+      },
+      "endpoint_coordinates": {
+        "22": [
+          84.0,
+          36.5
+        ],
+        "23": [
+          86.0,
+          36.5
+        ],
+        "76": [
+          111.0,
+          27.0
+        ],
+        "77": [
+          115.0,
+          27.0
+        ]
+      }
+    },
+    {
+      "p_length_mm": 719.6116124319258,
+      "n_length_mm": 719.6116124319258,
+      "skew_mm": 0.0,
+      "coupled_centre_spacing_mm": 1.0,
+      "coupled_edge_gap_mm": 0.75,
+      "sampled_min_centre_spacing_mm": 0.9994645874761854,
+      "pair_vias": 0,
+      "checks": "PASS: endpoints, continuity, same layer, pad/copper clearance, self-crossings, spacing, skew",
+      "expanded_states": 4103,
+      "discovered_states": 8104,
+      "coupled_actions": 1416,
+      "algorithm": "joint weighted A*, top layer, exact offset arcs",
+      "board_scale": 10,
+      "board_width_mm": 1500.0,
+      "board_height_mm": 1000.0,
+      "grid_mm": 0.5,
+      "grid_columns": 3000,
+      "grid_rows": 2000,
+      "grid_cells_per_layer": 6000000,
+      "pair_route_seconds": [
+        2.132885199971497,
+        1.799157100263983,
+        1.8964121998287737,
+        1.9066268997266889,
+        2.1253033000975847
+      ],
+      "pair_median_seconds": 1.9066268997266889,
+      "pair_min_seconds": 1.799157100263983,
+      "pair_max_seconds": 2.132885199971497,
+      "setup_seconds": 0.0004366999492049217,
+      "pair_validation_seconds": 0.22062260005623102,
+      "pair_validation_samples_seconds": [
+        0.24011520016938448,
+        0.1875203000381589,
+        0.170996000058949,
+        0.33557110000401735,
+        0.22062260005623102
+      ],
+      "pair_verified_samples_seconds": [
+        2.3730004001408815,
+        1.986677400302142,
+        2.0674081998877227,
+        2.242197999730706,
+        2.3459259001538157
+      ],
+      "pair_verified_median_seconds": 2.242197999730706,
+      "single_routing_and_validation_seconds": 69.02015870017931,
+      "single_nets_attempted": 25,
+      "single_nets_routed": 19,
+      "single_nets_failed": 6,
+      "failures": [
+        {
+          "pads": [
+            99,
+            43
+          ],
+          "reason": "state limit",
+          "expanded_states": 100001
+        },
+        {
+          "pads": [
+            10,
+            84
+          ],
+          "reason": "no path",
+          "expanded_states": 169
+        },
+        {
+          "pads": [
+            69,
+            9
+          ],
+          "reason": "state limit",
+          "expanded_states": 100001
+        },
+        {
+          "pads": [
+            40,
+            66
+          ],
+          "reason": "state limit",
+          "expanded_states": 100001
+        },
+        {
+          "pads": [
+            33,
+            57
+          ],
+          "reason": "state limit",
+          "expanded_states": 100001
+        },
+        {
+          "pads": [
+            56,
+            18
+          ],
+          "reason": "no path",
+          "expanded_states": 524
+        }
+      ],
+      "single_expanded_states": 764122,
+      "pairs": {
+        "P": [
+          22,
+          76
+        ],
+        "N": [
+          23,
+          77
+        ]
+      },
+      "endpoint_coordinates": {
+        "22": [
+          759.0,
+          486.5
+        ],
+        "23": [
+          761.0,
+          486.5
+        ],
+        "76": [
+          1236.0,
+          252.0
+        ],
+        "77": [
+          1240.0,
+          252.0
+        ]
+      }
+    }
+  ],
+  "large_to_original_pair_time_ratio": 1.4430518361410791,
+  "large_to_original_verified_pair_time_ratio": 1.653161022344872,
+  "large_to_original_pair_length_ratio": 16.13058962013541
+}

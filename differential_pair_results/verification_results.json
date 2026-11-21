@@ -1,0 +1,11 @@
+{
+  "geometry_and_all_turn_directions": "PASS",
+  "obstacle_detour": {
+    "result": "PASS",
+    "length_mm": 44.61161243192578,
+    "expanded_states": 2919
+  },
+  "blocked_escape_rejected": "PASS",
+  "broken_pair_rejected": "PASS",
+  "reserved_pair_pads_and_unique_single_net_endpoints": "PASS"
+}

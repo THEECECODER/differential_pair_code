@@ -37,7 +37,7 @@ BENCHMARK_REPEATS = 5
 RANDOM_NET_COUNT = 25
 RANDOM_SEED = 7
 MAX_SEARCH_STATES = 500_000 # explicit failure, never a silently accepted partial path
-MAX_SINGLE_SEARCH_STATES = 20_000 # bounded attempts for unrelated random connections
+MAX_SINGLE_SEARCH_STATES = 100_000 # bounded attempts for unrelated random connections
 OUTPUT_DIR = Path(__file__).resolve().parent / "differential_pair_results"
 PAIR_P = (22, 76)          # global zero-based pads: U1 -> J2
 PAIR_N = (23, 77)
@@ -352,7 +352,8 @@ def route_pair(board):
                         return False
         return True
 
-    state0 = (round(start[0] / GRID), round(start[1] / GRID), 3, 0)
+    # Last value tracks consecutive straight moves, capped at 4 = 2 mm.
+    state0 = (round(start[0] / GRID), round(start[1] / GRID), 3, 0, 0)
     goal_xy = (round(goal[0] / GRID), round(goal[1] / GRID))
     counter = itertools.count()
     heap, best, parent = [], {state0: 0.0}, {}
@@ -371,7 +372,7 @@ def route_pair(board):
         expanded += 1
         if expanded > MAX_SEARCH_STATES:
             raise RuntimeError("Differential search state limit reached; no route accepted.")
-        x, y, heading, winding = state
+        x, y, heading, winding,straight_run= state
         if (x, y) == goal_xy and heading == 3 and winding == 0:
             actions = []
             while state != state0:
@@ -384,13 +385,24 @@ def route_pair(board):
             return p, n, dict(expanded_states=expanded, discovered_states=len(best),
                               coupled_actions=len(actions), algorithm="joint weighted A*, top layer, exact offset arcs")
         center = x * GRID, y * GRID
+ 
         for turn in (0, 1, -1):
+            if turn != 0 and straight_run < 4:
+                continue
+            
             new_winding = winding + turn
             if abs(new_winding) > 2:
                 continue
             endpoint, new_heading, rails, move_length = pair_move(center, heading, turn)
-            next_state = (round(endpoint[0] / GRID), round(endpoint[1] / GRID), new_heading, new_winding)
-            new_cost = cost + move_length + (0.10 if turn else 0.0)
+            new_straight_run=min(8,straight_run+1) if turn == 0 else 0
+            next_state = (round(endpoint[0] / GRID),
+    round(endpoint[1] / GRID),
+    new_heading,
+    new_winding,
+    new_straight_run,)
+            short_run_penalty = 0.25 * max(0, 8 - straight_run) if turn else 0.0
+            TURN_PENALITY=2.0
+            new_cost = cost + move_length + (TURN_PENALITY if turn else 0.0) + short_run_penalty
             if new_cost >= best.get(next_state, math.inf) - EPS:
                 continue
             # Main paired corridor must avoid ALL pads, including its endpoints.
@@ -498,6 +510,8 @@ def route_single(board, ia, ib):
     heap = []
     expanded = 0
     collision_cache, via_cache = {}, {}
+    
+    
 
     def h(state):
         dx, dy = abs(state[0] - goal[0]), abs(state[1] - goal[1])
@@ -510,6 +524,19 @@ def route_single(board, ia, ib):
         if cost > best.get(state, math.inf) + EPS:
             continue
         expanded += 1
+        if ia == 56 and ib == 18 and expanded <= 3:
+            print(
+        "NET", ia, ib,
+        "state", state,
+        "pad", (pa.x, pa.y),
+        "goal", goal,
+        "expanded", expanded
+    )
+            
+            
+
+            
+        
         if expanded > MAX_SINGLE_SEARCH_STATES:
             return None, dict(reason="state limit", expanded_states=expanded)
         x, y, layer, pdx, pdy = state
@@ -529,6 +556,14 @@ def route_single(board, ia, ib):
                     primitives.append(Primitive(axy, bxy, a[2]))
             return (primitives, vias), dict(expanded_states=expanded)
         candidates = []
+        if ia == 91 and ib == 21:
+            print("START", point, "layer", layer, "pad", (pa.x, pa.y))
+            for dx, dy in SINGLE_DIRS:
+                end = (x + dx) * GRID, (y + dy) * GRID
+                print("MOVE", (dx, dy), "to", end,
+                      "clear:", board.segment_clear(point, end, layer, excluded))
+            print("VIA CLEAR:", board.via_clear(point))
+        
         for dx, dy in SINGLE_DIRS:
             if (pdx or pdy) and (dx, dy) != (pdx, pdy):
                 if pdx * dx + pdy * dy <= 0 or pdx * pdx + pdy * pdy == dx * dx + dy * dy:
